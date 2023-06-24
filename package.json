@@ -1,0 +1,19 @@
+{
+  "name": "perionica-vasic-3d",
+  "version": "1.0.0",
+  "description": "Site",
+  "main": "index.js",
+  "scripts": {
+    "start": "parcel src/index.html && parcel watch src/index.html",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Marko Vasic",
+  "license": "ISC",
+  "dependencies": {
+    "@parcel/transformer-glsl": "^2.9.2",
+    "@parcel/transformer-image": "^2.9.2",
+    "gsap": "^3.12.1",
+    "parcel": "^2.9.2",
+    "three": "^0.153.0"
+  }
+}
