@@ -10,10 +10,17 @@
   "author": "Marko Vasic",
   "license": "ISC",
   "dependencies": {
-    "@parcel/transformer-glsl": "^2.9.2",
-    "@parcel/transformer-image": "^2.9.2",
     "gsap": "^3.12.1",
-    "parcel": "^2.9.2",
     "three": "^0.153.0"
+  },
+  "devDependencies": {
+    "@parcel/config-default": "^2.9.3",
+    "@parcel/transformer-glsl": "^2.9.3",
+    "@parcel/transformer-image": "^2.9.3",
+    "parcel": "^2.9.3",
+    "parcel-reporter-static-files-copy": "^1.5.0"
+  },
+  "staticFiles": {
+    "staticOutPath": "models"
   }
 }

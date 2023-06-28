@@ -9,7 +9,14 @@ import pattern from '../src/img/grid.png';
 
 import vertexShader from '../src/js/Shaders/vertexShader.glsl';
 import fragmentShader from '../src/js/Shaders/fragmentShader.glsl';
+
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
+import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader.js';
+import hammer from '../static/hammer.glb';
+import hdr from '../static/env.hdr';
+
 import { gsap } from 'gsap';
+import { mousePoints, raycasterIntercept } from './js/raycaster/raycasterIntercept';
 
 let time = new THREE.Clock();
 
@@ -49,19 +56,49 @@ geometry.setAttribute('direction', new THREE.Float32BufferAttribute(directions, 
 
 scene.add(glassMesh);
 
-scene.add(mesh)
+scene.add(mesh);
+
+const glbtLoader = new GLTFLoader();
+const rgbeLoader = new RGBELoader();
+
+rgbeLoader.load(hdr, (texture) => {
+    texture.mapping = THREE.EquirectangularReflectionMapping;
+    scene.environment = texture;
+    
+    glbtLoader.load(hammer, (glb) => {
+        const model = glb.scene
+        glb.scene.scale.set(0.07, 0.07, 0.07);
+        glb.scene.position.set(mousePoints.x, mousePoints.y, 1.5);
+        glb.scene.rotateX(1);
+        scene.add(glb.scene);
+    });
+})
+
 
 window.addEventListener('resize', () => onResize(camera, renderer));
 window.addEventListener('click', () => {
+    gsap.to(scene.children[3].position, {
+        setZ: 0.5,
+        duration: 0.01
+    });
+
+    gsap.to(scene.children[3].rotation, {
+        delay: 0.3,
+        x: -1,
+        duration: 0.2
+    });
+
+    gsap.to(scene.children[3].rotation, {
+        delay: 0.5,
+        x: 1,
+        duration: 0.5
+    });
+
     if(material.uniforms.uTransition.value === 0 ) {
         gsap.to(material.uniforms.uTransition, {
             duration: 2,
             value: 1,
             ease: "expo.in"
-        })
-        gsap.to(material.uniforms.uXtransition, {
-            duration: 1,
-            value: 1
         })
 
         return;
@@ -72,9 +109,17 @@ window.addEventListener('click', () => {
         duration: 1,
         value: 0
     })}
-})
+});
+
+window.addEventListener('mousemove', (event) => {
+    raycasterIntercept(event, camera);
+    if(scene.children[3]) {
+        scene.children[3].position.set(mousePoints.x, mousePoints.y, 1.5);
+    }
+});
 
 function animation() {
+    
     material.uniforms.uTime.value = time.getElapsedTime();
     
     renderer.clear();
