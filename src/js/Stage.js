@@ -6,7 +6,9 @@ export function Stage () {
   // const camera = new THREE.PerspectiveCamera(65, window.innerWidth / window.innerWidth, 0.1, 3000);
   const camera = new THREE.OrthographicCamera( - 1, 1, 1, - 1, -1, 20 );
   const scene = new THREE.Scene();
-  const renderer = new THREE.WebGLRenderer({antialias: true});
+
+  const canvas = document.querySelector('#canvas');
+  const renderer = new THREE.WebGLRenderer({antialias: true, canvas});
 
   var controls = new OrbitControls( camera, renderer.domElement );
   
@@ -25,7 +27,7 @@ export function Stage () {
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 0.5;
   
-  document.body.appendChild(renderer.domElement);
+  // document.body.appendChild(renderer.domElement);
   renderer.setSize(window.innerWidth, window.innerHeight);
 
   scene.add(camera)

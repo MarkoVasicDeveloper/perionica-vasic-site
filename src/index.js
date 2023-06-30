@@ -5,7 +5,7 @@ import { Stage } from "./js/Stage";
 import { onResize } from "./js/onResize";
 
 import screen from '../src/img/screen.png';
-import pattern from '../src/img/grid.png';
+import me from '../src/img/me.jpg';
 
 import vertexShader from '../src/js/Shaders/vertexShader.glsl';
 import fragmentShader from '../src/js/Shaders/fragmentShader.glsl';
@@ -22,7 +22,12 @@ let time = new THREE.Clock();
 
 const { camera, scene, renderer } = Stage();
 
-const geometry = new THREE.PlaneGeometry(2, 2, 700, 400);
+const container = document.querySelector('.cliner');
+const leftWiper = document.querySelector('.left');
+const centerWiper = document.querySelector('.center');
+const rightWiper = document.querySelector('.right');
+
+const geometry = new THREE.PlaneGeometry(1, 1.2, 400, 300);
 const material = new THREE.ShaderMaterial({
     vertexShader,
     fragmentShader,
@@ -35,14 +40,10 @@ const material = new THREE.ShaderMaterial({
 });
 const mesh = new THREE.Points(geometry, material);
 
-const glassGeometry = new THREE.PlaneGeometry(2, 2);
-const glassMaterial = new THREE.MeshStandardMaterial({transparent: true, map: new THREE.TextureLoader().load(pattern)});
-const glassMesh = new THREE.Mesh(glassGeometry, glassMaterial);
-glassMesh.position.setX(-2);
-
 const positionAttribute = geometry.getAttribute('position');
 
 let directions = [];
+let directionsX = [];
 
 function rand (a, b) {
   return a + (b - a) * Math.random();
@@ -50,11 +51,11 @@ function rand (a, b) {
 
 for (let i = 0; i < positionAttribute.count; i++) {
     directions.push(rand(-1.5, -0.9));
+    directionsX.push(rand(-1, 1));
 };
 
 geometry.setAttribute('direction', new THREE.Float32BufferAttribute(directions, 1));
-
-scene.add(glassMesh);
+geometry.setAttribute('directionX', new THREE.Float32BufferAttribute(directionsX, 1));
 
 scene.add(mesh);
 
@@ -66,39 +67,46 @@ rgbeLoader.load(hdr, (texture) => {
     scene.environment = texture;
     
     glbtLoader.load(hammer, (glb) => {
-        const model = glb.scene
-        glb.scene.scale.set(0.07, 0.07, 0.07);
+        glb.scene.scale.set(0.08, 0.08, 0.08);
         glb.scene.position.set(mousePoints.x, mousePoints.y, 1.5);
         glb.scene.rotateX(1);
         scene.add(glb.scene);
     });
-})
-
+});
 
 window.addEventListener('resize', () => onResize(camera, renderer));
+const tl = gsap.timeline();
 window.addEventListener('click', () => {
-    gsap.to(scene.children[3].position, {
+    tl.to(scene.children[2].position, {
         setZ: 0.5,
         duration: 0.01
-    });
-
-    gsap.to(scene.children[3].rotation, {
+    })
+    .to(scene.children[2].rotation, {
         delay: 0.3,
         x: -1,
-        duration: 0.2
-    });
-
-    gsap.to(scene.children[3].rotation, {
+        duration: 0.1
+    })
+    .to(scene.children[2].rotation, {
         delay: 0.5,
         x: 1,
         duration: 0.5
     });
 
     if(material.uniforms.uTransition.value === 0 ) {
-        gsap.to(material.uniforms.uTransition, {
+        tl.to(material.uniforms.uTransition, {
             duration: 2,
             value: 1,
             ease: "expo.in"
+        })
+        .to(material.uniforms.uXtransition, {
+            duration: 2,
+            value: 1,
+            ease: "expo.in"
+        }, '<=0.2')
+        .to(container, {
+            delay: 2,
+            duration: 5,
+            translateX: '-100vw'
         })
 
         return;
@@ -106,15 +114,22 @@ window.addEventListener('click', () => {
 
     if(material.uniforms.uTransition.value === 1 ) {
         gsap.to(material.uniforms.uTransition, {
-        duration: 1,
-        value: 0
-    })}
+            duration: 1,
+            value: 0
+        })
+
+        gsap.to(material.uniforms.uXtransition, {
+            duration: 1,
+            value: 0,
+            ease: "expo.in"
+        }, '<=1.5')
+    }
 });
 
 window.addEventListener('mousemove', (event) => {
     raycasterIntercept(event, camera);
-    if(scene.children[3]) {
-        scene.children[3].position.set(mousePoints.x, mousePoints.y, 1.5);
+    if(scene.children[2]) {
+        scene.children[2].position.set(mousePoints.x, mousePoints.y, 1.5);
     }
 });
 
