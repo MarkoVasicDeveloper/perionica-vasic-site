@@ -5,29 +5,24 @@ import { Stage } from "./js/Stage";
 import { onResize } from "./js/onResize";
 
 import screen from '../src/img/screen.png';
-import me from '../src/img/me.jpg';
 
 import vertexShader from '../src/js/Shaders/vertexShader.glsl';
 import fragmentShader from '../src/js/Shaders/fragmentShader.glsl';
 
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader.js';
-import hammer from '../static/hammer.glb';
+import hammerObj from '../static/hammer.glb';
 import hdr from '../static/env.hdr';
 
 import { gsap } from 'gsap';
 import { mousePoints, raycasterIntercept } from './js/raycaster/raycasterIntercept';
+import { changeScreen } from './js/2d/animations/changeScreen/changeScreen';
 
 let time = new THREE.Clock();
 
 const { camera, scene, renderer } = Stage();
 
-const container = document.querySelector('.cliner');
-const leftWiper = document.querySelector('.left');
-const centerWiper = document.querySelector('.center');
-const rightWiper = document.querySelector('.right');
-
-const geometry = new THREE.PlaneGeometry(1, 1.2, 400, 300);
+const geometry = new THREE.PlaneGeometry(1.2, 1, 400, 200);
 const material = new THREE.ShaderMaterial({
     vertexShader,
     fragmentShader,
@@ -66,7 +61,7 @@ rgbeLoader.load(hdr, (texture) => {
     texture.mapping = THREE.EquirectangularReflectionMapping;
     scene.environment = texture;
     
-    glbtLoader.load(hammer, (glb) => {
+    glbtLoader.load(hammerObj, (glb) => {
         glb.scene.scale.set(0.08, 0.08, 0.08);
         glb.scene.position.set(mousePoints.x, mousePoints.y, 1.5);
         glb.scene.rotateX(1);
@@ -75,55 +70,10 @@ rgbeLoader.load(hdr, (texture) => {
 });
 
 window.addEventListener('resize', () => onResize(camera, renderer));
-const tl = gsap.timeline();
+
 window.addEventListener('click', () => {
-    tl.to(scene.children[2].position, {
-        setZ: 0.5,
-        duration: 0.01
-    })
-    .to(scene.children[2].rotation, {
-        delay: 0.3,
-        x: -1,
-        duration: 0.1
-    })
-    .to(scene.children[2].rotation, {
-        delay: 0.5,
-        x: 1,
-        duration: 0.5
-    });
-
-    if(material.uniforms.uTransition.value === 0 ) {
-        tl.to(material.uniforms.uTransition, {
-            duration: 2,
-            value: 1,
-            ease: "expo.in"
-        })
-        .to(material.uniforms.uXtransition, {
-            duration: 2,
-            value: 1,
-            ease: "expo.in"
-        }, '<=0.2')
-        .to(container, {
-            delay: 2,
-            duration: 5,
-            translateX: '-100vw'
-        })
-
-        return;
-    }
-
-    if(material.uniforms.uTransition.value === 1 ) {
-        gsap.to(material.uniforms.uTransition, {
-            duration: 1,
-            value: 0
-        })
-
-        gsap.to(material.uniforms.uXtransition, {
-            duration: 1,
-            value: 0,
-            ease: "expo.in"
-        }, '<=1.5')
-    }
+    changeScreen(scene, material)
+    
 });
 
 window.addEventListener('mousemove', (event) => {
