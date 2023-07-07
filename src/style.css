@@ -6,6 +6,7 @@
 
 body {
   overflow: hidden;
+  position: relative;
 }
 
 .container {
@@ -54,4 +55,28 @@ canvas {
 img {
   width: 100px;
   height: 200px;
+}
+
+section {
+  position: absolute;
+  inset: 0 0 0 0;
+  color: antiquewhite;
+}
+
+#title {
+  position: relative;
+  width: 100%;
+  padding-top: 1rem;
+  padding-left: 20%;
+  font-size: 3rem;
+  font-family: 'Bagel Fat One', cursive;
+  color: #793ea5;
+  /* font-family: 'Kalam', cursive; */
+}
+
+#subtitle {
+  font-family: 'Courgette', cursive;
+  color: #fec400;
+  padding-left: 50%;
+  font-size: 1.7rem;
 }

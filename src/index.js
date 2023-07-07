@@ -22,7 +22,7 @@ let time = new THREE.Clock();
 
 const { camera, scene, renderer } = Stage();
 
-const geometry = new THREE.PlaneGeometry(1.2, 1, 400, 200);
+const geometry = new THREE.PlaneGeometry(0.8, 1, 400, 200);
 const material = new THREE.ShaderMaterial({
     vertexShader,
     fragmentShader,
@@ -71,8 +71,60 @@ rgbeLoader.load(hdr, (texture) => {
 
 window.addEventListener('resize', () => onResize(camera, renderer));
 
+//title
+const title = 'Perionica Vasic';
+const titleContainer = document.getElementById('title');
+
+title.split('').forEach(letter => {
+    const div = document.createElement('div');
+    div.style.display = 'inline-block';
+    div.style.width = 'min-content';
+    div.classList.add('letter');
+    const text = document.createTextNode(letter);
+    if (letter === ' ') div.style.width = '4px';
+    div.appendChild(text);
+    titleContainer.appendChild(div);
+});
+
+//subtitle
+
+const subtitle = 'Cistoca je pola zdravlja!';
+const subtitleContainer = document.getElementById('subtitle');
+
+subtitle.split('').forEach(letter => {
+    const div = document.createElement('div');
+    div.style.display = 'inline-block';
+    div.style.width = 'min-content';
+    div.classList.add('letter');
+    const text = document.createTextNode(letter);
+    if (letter === ' ') div.style.width = '4px';
+    div.appendChild(text);
+    subtitleContainer.appendChild(div);
+})
+
+// animate title and subtitle
+
+const titleLetters = document.getElementsByClassName('letter');
+
+[...titleLetters].forEach((letter, index) => {
+    gsap.to(letter, {
+        delay: 3,
+        duration: Math.random(),
+        y: window.innerHeight - letter.getBoundingClientRect().bottom,
+        x: rand(-10, 10),
+        rotate: rand(0, 360)
+    })
+})
+
 window.addEventListener('click', () => {
-    changeScreen(scene, material)
+    const allSpan = document.querySelectorAll('.content span');
+    Array.from(allSpan).forEach(letter => {
+        gsap.to(letter, {
+            duration: 2,
+            yPercent: -50
+        })
+    })
+    changeScreen(scene, material);
     
 });
 
