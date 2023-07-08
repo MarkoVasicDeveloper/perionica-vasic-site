@@ -1,6 +1,6 @@
 import gsap from 'gsap';
 
-const hammerTimeline = gsap.timeline({paused: true, delay: 0.2});
+export const hammerTimeline = gsap.timeline({paused: true, delay: 0.2});
 const content2dTimeline = gsap.timeline({paused: true});
 
 const container = document.querySelector('.cliner');
@@ -52,7 +52,7 @@ export function changeScreen (scene, material) {
 
   .to(vaccumCliner, {
       duration: 0.2,
-      translateX: '-200px',
+      translateX: '-200px'
   })
 
   .to(leftWiper, {

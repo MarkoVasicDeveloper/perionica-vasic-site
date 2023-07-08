@@ -26,6 +26,7 @@ canvas {
   position: relative;
   display: flex;
   background-color: #000;
+  z-index: 100;
 }
 
 .cliner > div {
@@ -71,7 +72,6 @@ section {
   font-size: 3rem;
   font-family: 'Bagel Fat One', cursive;
   color: #793ea5;
-  /* font-family: 'Kalam', cursive; */
 }
 
 #subtitle {
@@ -79,4 +79,14 @@ section {
   color: #fec400;
   padding-left: 50%;
   font-size: 1.7rem;
+}
+
+#pageContent {
+  width: 35%;
+  /* border: 1px solid red; */
+  margin-left: 4rem;
+  margin-top: 10%;
+  font-size: 1.1rem;
+  font-family: 'Poppins', sans-serif;
+
 }

@@ -16,11 +16,18 @@ import hdr from '../static/env.hdr';
 
 import { gsap } from 'gsap';
 import { mousePoints, raycasterIntercept } from './js/raycaster/raycasterIntercept';
-import { changeScreen } from './js/2d/animations/changeScreen/changeScreen';
+import { changeScreen, hammerTimeline } from './js/2d/animations/changeScreen/changeScreen';
+import { text } from './misc/text';
+import { generateText, removeText } from './misc/textFunction';
 
 let time = new THREE.Clock();
+let contentIndex = 0;
 
 const { camera, scene, renderer } = Stage();
+
+const titleContainer = document.getElementById('title');
+const subtitleContainer = document.getElementById('subtitle');
+const pageContentContainer = document.getElementById('pageContent');
 
 const geometry = new THREE.PlaneGeometry(0.8, 1, 400, 200);
 const material = new THREE.ShaderMaterial({
@@ -34,6 +41,8 @@ const material = new THREE.ShaderMaterial({
     }
 });
 const mesh = new THREE.Points(geometry, material);
+
+mesh.position.setX(0.4);
 
 const positionAttribute = geometry.getAttribute('position');
 
@@ -71,61 +80,30 @@ rgbeLoader.load(hdr, (texture) => {
 
 window.addEventListener('resize', () => onResize(camera, renderer));
 
-//title
-const title = 'Perionica Vasic';
-const titleContainer = document.getElementById('title');
 
-title.split('').forEach(letter => {
-    const div = document.createElement('div');
-    div.style.display = 'inline-block';
-    div.style.width = 'min-content';
-    div.classList.add('letter');
-    const text = document.createTextNode(letter);
-    if (letter === ' ') div.style.width = '4px';
-    div.appendChild(text);
-    titleContainer.appendChild(div);
-});
+generateText([titleContainer, subtitleContainer, pageContentContainer], 0);
 
-//subtitle
-
-const subtitle = 'Cistoca je pola zdravlja!';
-const subtitleContainer = document.getElementById('subtitle');
-
-subtitle.split('').forEach(letter => {
-    const div = document.createElement('div');
-    div.style.display = 'inline-block';
-    div.style.width = 'min-content';
-    div.classList.add('letter');
-    const text = document.createTextNode(letter);
-    if (letter === ' ') div.style.width = '4px';
-    div.appendChild(text);
-    subtitleContainer.appendChild(div);
-})
-
-// animate title and subtitle
-
-const titleLetters = document.getElementsByClassName('letter');
-
-[...titleLetters].forEach((letter, index) => {
-    gsap.to(letter, {
-        delay: 3,
-        duration: Math.random(),
-        y: window.innerHeight - letter.getBoundingClientRect().bottom,
-        x: rand(-10, 10),
-        rotate: rand(0, 360)
-    })
-})
+const letters = document.getElementsByClassName('letter');
 
 window.addEventListener('click', () => {
-    const allSpan = document.querySelectorAll('.content span');
-    Array.from(allSpan).forEach(letter => {
+    [...letters].forEach(letter => {
         gsap.to(letter, {
-            duration: 2,
-            yPercent: -50
+            delay: 1.5,
+            duration: Math.random(),
+            y: window.innerHeight - letter.getBoundingClientRect().bottom,
+            x: rand(-10, 10),
+            rotate: rand(0, 360)
         })
-    })
+    });
+
     changeScreen(scene, material);
-    
+    setTimeout(() => {
+        contentIndex += 3;
+        if(contentIndex > text.length - 1) contentIndex = 0;
+        
+        removeText([titleContainer, subtitleContainer, pageContentContainer]);
+        generateText([titleContainer, subtitleContainer, pageContentContainer], contentIndex);
+    }, 10000);
 });
 
 window.addEventListener('mousemove', (event) => {
