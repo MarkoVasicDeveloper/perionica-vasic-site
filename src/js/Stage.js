@@ -3,7 +3,8 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 
 export function Stage () {
-  const camera = new THREE.OrthographicCamera( - 1, 1, 1, - 1, -1, 20 );
+  // const camera = new THREE.OrthographicCamera( - 1, 1, 1, - 1, -1, 20 );
+  const camera = new THREE.PerspectiveCamera(65, window.innerWidth / window.innerWidth, 0.1, 3000);
   const scene = new THREE.Scene();
 
   const canvas = document.querySelector('#canvas');
@@ -11,6 +12,10 @@ export function Stage () {
 
   var controls = new OrbitControls( camera, renderer.domElement );
   
+  
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  camera.position.set(0, 0, 1000);
   controls.update();
 
   renderer.autoClear = false;
