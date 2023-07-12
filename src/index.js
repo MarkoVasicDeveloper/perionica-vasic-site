@@ -27,6 +27,7 @@ const { camera, scene, renderer } = Stage();
 
 const titleContainer = document.getElementById('title');
 const subtitleContainer = document.getElementById('subtitle');
+const contentTitle = document.getElementById('contentTitle');
 const pageContentContainer = document.getElementById('pageContent');
 
 const glbtLoader = new GLTFLoader();
@@ -61,7 +62,7 @@ const geometry = new THREE.BufferGeometry();
         positions.setXYZ(index, posX * 2, (j - 256) * 2, -100);
         coordinates.setXYZ(index, i, j * 1.3, -100);
 
-        directions.setX(index, rand(-1000, -550));
+        directions.setX(index, rand(-1000, -650));
         directionsX.setX(index, rand(-10, 10));
         speed.setX(index, rand(0.1, 100));
         index++
@@ -95,7 +96,7 @@ scene.add(mesh);
 window.addEventListener('resize', () => onResize(camera, renderer));
 
 
-generateText([titleContainer, subtitleContainer, pageContentContainer], 0);
+generateText([titleContainer, subtitleContainer,contentTitle, pageContentContainer], 0);
 
 const letters = document.getElementsByClassName('letter');
 
@@ -113,14 +114,14 @@ window.addEventListener('click', () => {
     changeScreen(scene, material);
     setTimeout(() => {
         imgCounter++;
-        contentIndex += 3;
+        contentIndex += 4;
         if(contentIndex > text.length - 1) {
             contentIndex = 0;
             imgCounter = 0;
         };
         
-        removeText([titleContainer, subtitleContainer, pageContentContainer]);
-        generateText([titleContainer, subtitleContainer, pageContentContainer], contentIndex);
+        removeText([titleContainer, subtitleContainer, contentTitle, pageContentContainer]);
+        generateText([titleContainer, subtitleContainer, contentTitle, pageContentContainer], contentIndex);
     }, 10000);
 });
 

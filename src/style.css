@@ -7,12 +7,13 @@
 body {
   overflow: hidden;
   position: relative;
+  background-color: #111;
+  cursor: none;
 }
 
 .container {
   width: 200vw;
   display: flex;
-  background-color: #111;
 }
 
 canvas {
@@ -25,7 +26,7 @@ canvas {
   height: 100vh;
   position: relative;
   display: flex;
-  background-color: #000;
+  background-color: #111;
   z-index: 100;
 }
 
@@ -62,6 +63,7 @@ section {
   position: absolute;
   inset: 0 0 0 0;
   color: antiquewhite;
+  z-index: -1;
 }
 
 #title {
@@ -81,12 +83,40 @@ section {
   font-size: 1.7rem;
 }
 
-#pageContent {
+#pageContent, #contentTitle {
   width: 35%;
-  /* border: 1px solid red; */
   margin-left: 4rem;
-  margin-top: 10%;
   font-size: 1.1rem;
   font-family: 'Poppins', sans-serif;
+}
 
+#contentTitle {
+  margin-top: 10%;
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  font-family: 'Bagel Fat One', cursive;
+  color: #793ea5;
+  text-align: center;
+  font-style: italic;
+}
+
+.specific {
+  color: #fec400;
+  font-weight: 800;
+}
+
+.mark {
+  margin-top: 0.1rem;
+  color: #fec400;
+  font-style: italic;
+}
+
+.underline > div {
+  border-bottom: 1px solid #793ea5;
+  color: #793ea5;
+  font-style: italic;
+}
+
+.wordDiv {
+  margin-right: 8px;
 }
