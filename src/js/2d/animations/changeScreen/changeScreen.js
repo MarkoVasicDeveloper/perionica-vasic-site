@@ -9,6 +9,8 @@ const centerWiper = document.querySelector('.center');
 const rightWiper = document.querySelector('.right');
 const vaccumCliner = document.querySelector('.vaccum-cliner');
 
+const video = document.querySelector('#spray');
+
 export function changeScreen (scene, material) {
   hammerTimeline.play();
 
@@ -47,7 +49,8 @@ export function changeScreen (scene, material) {
   content2dTimeline.to(container, {
       delay: 5,
       duration: 4,
-      translateX: '-100vw'
+      translateX: '-100vw',
+      onComplete: () => video.play()
   })
 
   .to(vaccumCliner, {
@@ -104,10 +107,11 @@ export function changeScreen (scene, material) {
 
   .to(rightWiper, {
       duration: .001,
-      translateY: '-40vh'
+      translateY: '-40vh',
+      onComplete: () => video.load()
   }, '<=0.')
     .to(vaccumCliner, {
-      duration: .001,
+      duration: .00001,
       translateX: '0px',
       onComplete: () => content2dTimeline.pause()
   })

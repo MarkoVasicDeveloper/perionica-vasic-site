@@ -7,7 +7,7 @@
 body {
   overflow: hidden;
   position: relative;
-  background-color: #111;
+  background-color: #020202;
   cursor: none;
 }
 
@@ -26,7 +26,7 @@ canvas {
   height: 100vh;
   position: relative;
   display: flex;
-  background-color: #111;
+  background-color: #000;
   z-index: 100;
 }
 
@@ -59,6 +59,12 @@ img {
   height: 200px;
 }
 
+video {
+  position: absolute;
+  width: 110%;
+  z-index: -1;
+}
+
 section {
   position: absolute;
   inset: 0 0 0 0;
@@ -84,7 +90,7 @@ section {
 }
 
 #pageContent, #contentTitle {
-  width: 35%;
+  width: 45%;
   margin-left: 4rem;
   font-size: 1.1rem;
   font-family: 'Poppins', sans-serif;
@@ -96,7 +102,6 @@ section {
   margin-bottom: 2rem;
   font-family: 'Bagel Fat One', cursive;
   color: #793ea5;
-  text-align: center;
   font-style: italic;
 }
 
