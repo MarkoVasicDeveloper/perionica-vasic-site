@@ -4,9 +4,6 @@ import { Stage } from "./js/Stage";
 
 import { onResize } from "./js/onResize";
 
-import vertexShader from '../src/js/Shaders/vertexShader.glsl';
-import fragmentShader from '../src/js/Shaders/fragmentShader.glsl';
-
 import { gsap } from 'gsap';
 import { mousePoints, raycasterIntercept } from './js/raycaster/raycasterIntercept';
 import { changeScreen } from './js/2d/animations/changeScreen/changeScreen';
@@ -16,6 +13,7 @@ import { textures } from './misc/textures';
 import { loadHammer } from './js/loadHammer';
 import { imageMesh } from './js/imageMesh';
 import { rand } from './misc/rand';
+import { screenOrientation } from './js/screenOrientation';
 
 let time = new THREE.Clock();
 let contentIndex = 0;
@@ -28,12 +26,17 @@ const subtitleContainer = document.getElementById('subtitle');
 const contentTitle = document.getElementById('contentTitle');
 const pageContentContainer = document.getElementById('pageContent');
 
+const label = document.querySelector('label');
+const loadingContent = document.querySelector('.loadingContent');
+
 loadHammer(scene);
 
 const { material } = imageMesh(scene);
 
 generateText([titleContainer, subtitleContainer,contentTitle, pageContentContainer], 0);
 const letters = document.getElementsByClassName('letter');
+
+screen.orientation.addEventListener('change', () => screenOrientation(loadingContent, label));
 
 window.addEventListener('resize', () => onResize(camera, renderer));
 

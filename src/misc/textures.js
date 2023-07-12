@@ -6,8 +6,7 @@ import t3 from '../img/deep-cleaning.webp';
 import t4 from '../img/truck-washing.jpg';
 import t5 from '../img/carpet-cleaning.jpg';
 
-export const loadingManager = new THREE.LoadingManager();
-const textureLoader = new THREE.TextureLoader(loadingManager);
+const textureLoader = new THREE.TextureLoader();
 
 export const textures = [
   textureLoader.load(t1),
